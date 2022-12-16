@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Display List</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+  <style>
+    body{
+      margin: 50px;
+      text-align: center;
+    }
+
+  </style>
+</head>
+<body>
+<div>
+  <h1>Listen</h1>
+ <form action="/home/create" method="get"><button  class="btn btn-primary" type="submit">Add new music</button></form>
+</div>
+<div>
+  <table class="table table-bordered" >
+    <tr>
+      <th>STT</th>
+      <th>ID</th>
+      <th>Avata</th>
+      <th>Name</th>
+      <th>Single</th>
+      <th>Category</th>
+      <th>Play</th>
+      <th colspan="2">Action</th>
+    </tr>
+    <tr th:each="p,status : ${musicList}">
+      <td th:text="${status.count}"></td>
+      <td th:text="${p.getId()}"></td>
+      <td><img width="70px" height="70px" th:src="|/image/${p.getAvatar()}|"></td>
+      <td th:text="${p.getName()}"></td>
+      <td th:text="${p.getSingle()}"></td>
+      <td th:text="${p.getCategory()}"></td>
+      <td><audio th:src="|/music/${p.getUrl()}|" controls><i class="fa-solid fa-play"></i></audio></td>
+      <td><a th:href="@{|/home/edit/${p.getId()}|}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+      <td><a th:href="@{|/home/delete/${p.getId()}|}" onclick=" return check()"><i class="fa-solid fa-trash"></i></a></td>
+    </tr>
+  </table>
+</div>
+</body>
+<script>
+  function  check(){
+    return confirm("Bạn chắc chắn muốn xóa");
+  }
+</script>
+</html>

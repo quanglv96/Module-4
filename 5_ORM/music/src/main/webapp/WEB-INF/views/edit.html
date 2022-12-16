@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ADD NEW</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <style>
+        body {
+            align-content:center;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1>ADD NEW MUSIC</h1>
+</div>
+<div>
+    <form th:action="@{/home/update}" method="post" th:object="${musicForm}" novalidate enctype="multipart/form-data">
+        <table>
+            <tr th:colspan="2">
+                <input hidden type="text" th:field="*{id}" th:value="${musicForm.getId()}">
+            </tr>
+            <tr>
+                <td><label>Name</label></td>
+                <td><input type="text" th:field="*{name}" th:value="${musicForm.getName()}"></td>
+            </tr>
+            <tr>
+                <td><label>Single</label></td>
+                <td><input type="text" th:field="*{single}" th:value="${musicForm.getSingle()}"></td>
+            </tr>
+            <tr>
+                <td><label>Category</label></td>
+                <td><input type="text" th:field="*{category}" th:value="${musicForm.getCategory()}"></td>
+            </tr>
+            <tr>
+                <td><label>Avatar</label></td>
+                <td><input type="file" th:field="*{avatar}" th:value="${musicForm.getAvatar()}"></td>
+            </tr>
+            <tr>
+                <td><label>Music</label></td>
+                <td><input type="file" th:field="*{url}" th:value="${musicForm.getUrl()}"></td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </td>
+                <td><a th:href="@{/home}">
+                    <button type="button" class="btn btn-close">Back</button>
+                </a></td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>
