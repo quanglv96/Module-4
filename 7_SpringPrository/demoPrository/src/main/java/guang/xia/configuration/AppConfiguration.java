@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -38,6 +39,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EnableJpaRepositories("guang.xia.repository")
 @ComponentScan("guang.xia")
+@EnableSpringDataWebSupport
 //@PropertySource("classpath:upload.properties")
 public class AppConfiguration implements WebMvcConfigurer, ApplicationContextAware {
     //    @Value("abc")
@@ -117,7 +119,7 @@ public class AppConfiguration implements WebMvcConfigurer, ApplicationContextAwa
     public Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
         return properties;
     }
 
