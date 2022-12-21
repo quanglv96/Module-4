@@ -1,9 +1,8 @@
 package guang.xia.repository;
 
-import guang.xia.model.Customer;
-import org.springframework.stereotype.Repository;
+import guang.xia.model.Post;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public interface ICustomerRepository extends IGeneralRepository<Customer> {
-    boolean insertWithStoredProcedure(Customer customer);
+
+public interface IPostRepository extends JpaRepository<Post, Long> {
 }
