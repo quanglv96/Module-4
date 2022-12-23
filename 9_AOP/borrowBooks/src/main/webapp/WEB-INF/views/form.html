@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <style>
+        body {
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <a th:href="@{/home}"><h1>Library</h1></a>
+</div>
+<div><h1 th:text="${title}"></h1></div>
+<div style="text-align: center">
+    <form action="/home/save" method="post" th:object="${book}">
+        <table style="margin-top: 50px; border: 1px solid black">
+            <tr>
+                <th>Name Book:</th>
+                <td><input type="text" th:field="*{nameBook}" placeholder="Name Book"></td>
+            </tr>
+            <tr th:if="${#fields.hasErrors('nameBook')}">
+                <td colspan="2" th:errors="*{nameBook}">Name Error</td>
+            </tr>
+            <tr>
+                <th>Quantity:</th>
+                <td><input type="text" th:field="*{quantity}" placeholder="Quantity"></td>
+            </tr>
+            <tr th:if="${#fields.hasErrors('quantity')}">
+                <td colspan="2" th:errors="*{quantity}">Name Error</td>
+            </tr>
+            <tr>
+                <td><button class="btn btn-success" type="submit">Save</button></td>
+                <td><a th:href="@{/home}"><button class="btn btn-close" type="button"></button></a></td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>
