@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Detail</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<body>
+  <div>
+    <table>
+      <tr>
+        <th>Name:</th>
+        <th th:text="${info.nameUser}"></th>
+      </tr>
+      <tr>
+        <th>Phone:</th>
+        <th th:text="${info.phone}"></th>
+      </tr>
+      <tr>
+        <th>Address:</th>
+        <th th:text="${info.address}"></th>
+      </tr>
+      <tr>
+        <th>Code Order:</th>
+        <th th:text="${info.getCodeOrder()}"></th>
+      </tr>
+    </table>
+  </div>
+  <div>
+    <div>
+      <table class="table table-striped">
+        <tr>
+          <th>STT</th>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Image</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Total</th>
+        </tr>
+        <th:block th:each="p, ps :${orderDetail}">
+          <tr>
+            <td th:text="${ps.count}"></td>
+            <td th:text="${p.getProduct().getId_product()}"></td>
+            <td th:text="${p.getProduct().getName()}"></td>
+            <td><img th:src="|/image/${p.getProduct().getImg()}|" width="50px" height="50px"></td>
+            <td th:text="${p.getProduct().getPrice()}"></td>
+            <td th:text="${p.getQuantity()}"></td>
+            <td th:text="${p.getQuantity()*p.getProduct().getPrice()}"></td>
+          </tr>
+        </th:block>
+        <tr>
+          <th colspan="6">Total:</th>
+          <th th:text="${totalPayment}"></th>
+        </tr>
+      </table>
+    </div>
+  </div>
+<table>
+</table>
+</body>
+</html>
