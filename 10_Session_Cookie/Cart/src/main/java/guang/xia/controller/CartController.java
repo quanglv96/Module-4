@@ -56,6 +56,7 @@ public class CartController {
         modelAndView.addObject("info",oderDetail);
         modelAndView.addObject("orderDetail",orderDetailService.findAll());
         modelAndView.addObject("totalPayment",cart.countTotalPayment());
+        cart.getProducts().clear();
         return modelAndView;
     }
 

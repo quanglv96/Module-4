@@ -12,7 +12,7 @@ public class OderDetail {
     private String nameUser;
     private String phone;
     private String address;
-    @ManyToOne(targetEntity=Product.class)
+    @ManyToOne(targetEntity=Product.class, cascade = CascadeType.ALL)
     @JoinColumn(name="id_product")
     private Product product;
     private int quantity;

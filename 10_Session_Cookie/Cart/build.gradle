@@ -43,6 +43,9 @@ dependencies {
     implementation group: 'org.hibernate', name: 'hibernate-validator', version: '6.0.10.Final'
     implementation group: 'org.springframework', name: 'spring-aspects', version: '5.3.24'
     implementation group: 'org.springframework', name: 'spring-aop', version: '5.3.24'
+    implementation group: 'org.springframework', name: 'spring-tx', version: '5.3.20'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
+
 }
 
 test {

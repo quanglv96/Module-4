@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Controller
-@SessionAttributes("cart")
-@RequestMapping("/product")
+//@Controller
+//@SessionAttributes("cart")
+//@RequestMapping("/product")
 public class ProductController {
     @Autowired
     private IProductService productService;
