@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>List Smartphone</title>
+    <script  type = "text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script>
+        function deleteSmartphone(id){
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type: "DELETE",
+                data: JSON.stringify(id),
+                //tên API
+                url: "/smartphones",
+                //xử lý khi thành công
+                success: successHandler
+            });
+            event.preventDefault();
+        }
+        function updateSmartphone(index){
+            let producer = $('#producer').val();
+            let model = $('#model').val();
+            let price = $('#price').val();
+            let newSmartphone = {
+                id: index,
+                producer: producer,
+                model: model,
+                price: price
+            };
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type: "PUT",
+                data: JSON.stringify(newSmartphone),
+                //tên API
+                url: "/smartphones",
+                //xử lý khi thành công
+                success:function () {
+                    successHandler();
+                    document.getElementById("btn").setAttribute("onclick","addNewSmartPhone()");
+                    document.getElementById("btn").value="ADD";
+                    document.getElementById("producer").value="";
+                    document.getElementById("model").value="";
+                    document.getElementById("price").value="";
+                }
+
+
+            });
+            //chặn sự kiện mặc định của thẻ
+            event.preventDefault();
+        }
+        function fieldEditSmartPhone(index){
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type: "GET",
+                data: JSON.stringify(index),
+                //tên API
+                url: "/smartphones/"+index,
+                //xử lý khi thành công
+                success: function (data)  {
+                    document.getElementById("btn").setAttribute("onclick","updateSmartphone("+index+")")
+                    document.getElementById("btn").value="Update";
+                    document.getElementById("producer").value=data.producer;
+                    document.getElementById("model").value=data.model;
+                    document.getElementById("price").value=data.price;
+                }
+            })
+            event.preventDefault();
+        }
+        function addNewSmartPhone() {
+            //lay du lieu
+            let producer = $('#producer').val();
+            let model = $('#model').val();
+            let price = $('#price').val();
+            let newSmartphone = {
+                producer: producer,
+                model: model,
+                price: price
+            };
+            // goi ajax
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type: "POST",
+                data: JSON.stringify(newSmartphone),
+                //tên API
+                url: "/smartphones",
+                //xử lý khi thành công
+                success: successHandler
+
+            });
+            //chặn sự kiện mặc định của thẻ
+            event.preventDefault();
+        }
+
+        function successHandler() {
+            $.ajax({
+                type: "GET",
+                //tên API
+                url: "/smartphones",
+                //xử lý khi thành công
+                success: function (data) {
+                    // hien thi danh sach o day
+                    let content = '    <tr>\n' +
+                        '        <td>Producer</td>\n' +
+                        '        <td>Model</td>\n' +
+                        '        <td>Price</td>\n' +
+                        '        <td>Delete</td>\n' +
+                        '        <td>Edit</td>\n' +
+                        '    </tr>';
+                    for (let i = 0; i < data.length; i++) {
+                        content += getSmartphone(data[i]);
+                    }
+                    document.getElementById('smartphoneList').innerHTML = content;
+                }
+            });
+        }
+
+        function getSmartphone(smartphone) {
+            return `<tr><td >${smartphone.producer}</td><td >${smartphone.model}</td><td >${smartphone.price}</td>` +
+                `<td><a onclick="deleteSmartphone(${smartphone.id})" href="${smartphone.id}">Delete</a></td>`+
+              `<td><a onclick="fieldEditSmartPhone(${smartphone.id})" href="${smartphone.id}">Update</a></td></tr>`;
+        }
+        window.onload=function (){
+            successHandler();
+        }
+    </script>
+</head>
+<body>
+
+<form id="add-smartphone">
+    <table>
+        <tr>
+            <td>Producer:</td>
+            <td><input type="text" id="producer" placeholder="producer"></td>
+        </tr>
+        <tr>
+            <td>Model:</td>
+            <td><input type="text" id="model" placeholder="model"></td>
+        </tr>
+        <tr>
+            <td>Price:</td>
+            <td><input type="text" id="price" placeholder="price"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input id="btn" type="submit" value="Add" onclick="addNewSmartPhone()"></td>
+        </tr>
+    </table>
+</form>
+<h1>Smartphone List</h1>
+<table id="smartphoneList">
+
+</table>
+</body>
+</html>
