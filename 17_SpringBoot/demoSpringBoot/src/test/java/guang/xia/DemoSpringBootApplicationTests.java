@@ -1,4 +1,4 @@
-package com.example.demospringboot;
+package guang.xia;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
