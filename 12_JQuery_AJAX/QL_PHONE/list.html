@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>List Smartphone</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <style>
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width:400px; /* Full width */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <h1>ADD NEW</h1>
+            <form id="add-smartphone">
+                <table>
+                    <tr>
+                        <td>Producer:</td>
+                        <td><input type="text" id="producer" placeholder="producer"></td>
+                    </tr>
+                    <tr>
+                        <td>Model:</td>
+                        <td><input type="text" id="model" placeholder="model"></td>
+                    </tr>
+                    <tr>
+                        <td>Price:</td>
+                        <td><input type="text" id="price" placeholder="price"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button id="closeModal">Close</button>
+                        </td>
+                        <td><input id="btn" type="submit" value="Add" onclick="addNewSmartPhone()"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+<h1>Smartphone List</h1>
+<div>
+    <button id="turnOnModal">ADD NEW</button>
+</div>
+<table id="smartphoneList">
+</table>
+</body>
+<script>
+    window.onload = function () {
+        successHandler();
+    }
+</script>
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var turnOnModal = document.getElementById("turnOnModal");
+
+    // Get the <span> element that closes the modal
+    var closeModal = document.getElementById("closeModal")[0];
+
+    // When the user clicks on the button, open the modal
+    turnOnModal.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    closeModal.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outsideof the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+<script>
+    function deleteSmartphone(id) {
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "DELETE",
+            data: JSON.stringify(id),
+            //tên API
+            url: "/smartphones",
+            //xử lý khi thành công
+            success: successHandler
+        });
+        event.preventDefault();
+    }
+
+    function updateSmartphone(index) {
+        let producer = $('#producer').val();
+        let model = $('#model').val();
+        let price = $('#price').val();
+        let newSmartphone = {
+            id: index,
+            producer: producer,
+            model: model,
+            price: price
+        };
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "PUT",
+            data: JSON.stringify(newSmartphone),
+            //tên API
+            url: "/smartphones",
+            //xử lý khi thành công
+            success: function () {
+                successHandler();
+                document.getElementById("btn").setAttribute("onclick", "addNewSmartPhone()");
+                document.getElementById("btn").value = "ADD";
+                document.getElementById("producer").value = "";
+                document.getElementById("model").value = "";
+                document.getElementById("price").value = "";
+            }
+
+
+        });
+        //chặn sự kiện mặc định của thẻ
+        event.preventDefault();
+    }
+
+    function fieldEditSmartPhone(index) {
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "GET",
+            data: JSON.stringify(index),
+            //tên API
+            url: "/smartphones/" + index,
+            //xử lý khi thành công
+            success: function (data) {
+                modal.style.display = "block";
+                document.getElementById("btn").setAttribute("onclick", "updateSmartphone(" + index + ")")
+                document.getElementById("btn").value = "Update";
+                document.getElementById("producer").value = data.producer;
+                document.getElementById("model").value = data.model;
+                document.getElementById("price").value = data.price;
+            }
+        })
+        event.preventDefault();
+    }
+
+    function addNewSmartPhone() {
+        //lay du lieu
+        let producer = $('#producer').val();
+        let model = $('#model').val();
+        let price = $('#price').val();
+        let newSmartphone = {
+            producer: producer,
+            model: model,
+            price: price
+        };
+        // goi ajax
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "POST",
+            data: JSON.stringify(newSmartphone),
+            //tên API
+            url: "/smartphones",
+            //xử lý khi thành công
+            success: successHandler
+
+        });
+        //chặn sự kiện mặc định của thẻ
+        event.preventDefault();
+    }
+
+    function successHandler() {
+        $.ajax({
+            type: "GET",
+            //tên API
+            url: "/smartphones",
+            //xử lý khi thành công
+            success: function (data) {
+                modal.style.display = "none";
+                // hien thi danh sach o day
+                let content = '    <tr>\n' +
+                    '        <td>Producer</td>\n' +
+                    '        <td>Model</td>\n' +
+                    '        <td>Price</td>\n' +
+                    '        <td>Delete</td>\n' +
+                    '        <td>Edit</td>\n' +
+                    '    </tr>';
+                for (let i = 0; i < data.length; i++) {
+                    content += getSmartphone(data[i]);
+                }
+                document.getElementById('smartphoneList').innerHTML = content;
+            }
+        });
+    }
+
+    function getSmartphone(smartphone) {
+        return `<tr><td >${smartphone.producer}</td><td >${smartphone.model}</td><td >${smartphone.price}</td>` +
+            `<td><a onclick="return deleteSmartphone(${smartphone.id})" href="${smartphone.id}">Delete</a></td>` +
+            `<td><a onclick="fieldEditSmartPhone(${smartphone.id})" href="${smartphone.id}">Update</a></td></tr>`;
+    }
+</script>
+</html>
