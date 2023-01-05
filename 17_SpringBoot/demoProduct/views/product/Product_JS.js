@@ -39,7 +39,7 @@ function getProduct(products, i) {
     return `<tr><td>${i}</td><td>${products.id_product}</td>` +
         `<td >${products.name}</td>` +
         `<td>${products.price} $</td>` +
-        `<td><img height="50px" width="50px" src="../src/main/resources/image/${products.image}"</td>` +
+        `<td><img height="50px" width="50px" src="../../src/main/resources/image/${products.image}"</td>` +
         `<td>${products.category.name}</td>` +
         `<td><button class="btn btn-danger" onclick="deleteProduct(${products.id_product})">Delete</td>` +
         `<td><button class="btn btn-warning" onclick="fieldEditProduct(${products.id_product})">Update</td></tr>`;
@@ -87,11 +87,6 @@ function filedCategory(index) {
 function addNewProduct() {
     let formData = new FormData($('#formDemo')[0]);
     $.ajax({
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: "Bearer " + token
-        },
         type: "POST",
         data: formData,
         enctype: "multipart/form-data",
